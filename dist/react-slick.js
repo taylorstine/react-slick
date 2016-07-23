@@ -141,18 +141,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	    } else {
 	      settings = (0, _objectAssign2.default)({}, _defaultProps2.default, this.props);
 	    }
+
+	    var children = this.props.children;
+	    if (!Array.isArray(children)) {
+	      children = [children];
+	    }
+
+	    // Children may contain false or null, so we should filter them
+	    children = children.filter(function (child) {
+	      return !!child;
+	    });
+
 	    if (settings === 'unslick') {
 	      // if 'unslick' responsive breakpoint setting used, just return the <Slider> tag nested HTML
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        this.props.children
+	        children
 	      );
 	    } else {
 	      return _react2.default.createElement(
 	        _innerSlider.InnerSlider,
 	        settings,
-	        this.props.children
+	        children
 	      );
 	    }
 	  }
@@ -300,7 +311,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var dots;
 
-	    if (this.props.dots === true && this.state.slideCount > this.props.slidesToShow) {
+	    if (this.props.dots === true && this.state.slideCount >= this.props.slidesToShow) {
 	      var dotProps = {
 	        dotsClass: this.props.dotsClass,
 	        slideCount: this.state.slideCount,
@@ -813,7 +824,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          animating: false
 	        });
 	        if (_this.props.afterChange) {
-	          _this.props.afterChange(currentSlide);
+	          _this.props.afterChange(targetSlide);
 	        }
 	        _ReactTransitionEvents2.default.removeEndEventListener(_reactDom2.default.findDOMNode(_this.refs.track).children[currentSlide], _callback2);
 	      };
@@ -826,7 +837,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      });
 
 	      if (this.props.beforeChange) {
-	        this.props.beforeChange(this.state.currentSlide, currentSlide);
+	        this.props.beforeChange(this.state.currentSlide, targetSlide);
 	      }
 
 	      this.autoPlay();
